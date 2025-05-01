@@ -4,4 +4,17 @@
     <color name="white">#FFFFFFFF</color>
     <color name="xanh">#023e8a</color>
     <color name="cam">#ff6d00</color>
+    <color name="endColor">#FF5722</color> <!-- Bạn có thể đổi thành màu bạn muốn -->
+         <color name="purple_200">#BB86FC</color>
+        <color name="purple_500">#6200EE</color>
+        <color name="purple_700">#3700B3</color>
+        <color name="teal_200">#03DAC5</color>
+        <color name="teal_700">#018786</color>
+
+        <!-- Thêm 2 màu này để sửa lỗi -->
+        <color name="startColor">#FFA726</color> <!-- màu cam sáng -->
+    <color name="iconColor">#FFFFFF</color> <!-- hoặc đổi thành màu bạn muốn, ví dụ #000000 -->
+    <color name="textColor">#212121</color> <!-- Màu xám đậm, bạn có thể thay -->
+
+
 </resources>

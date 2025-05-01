@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "796679965949",
+    "project_id": "datbanletan",
+    "storage_bucket": "datbanletan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796679965949:android:261efc199f1622ce584294",
+        "android_client_info": {
+          "package_name": "com.example.datban"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbeSugKZ4QXGd4GKHt01sTCM3XTZ0qGFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
