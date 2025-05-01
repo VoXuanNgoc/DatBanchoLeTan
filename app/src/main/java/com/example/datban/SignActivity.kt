@@ -74,13 +74,40 @@ class SignActivity : AppCompatActivity() {
                 }
             }
     }
+//
+//    private fun saveUserData() {
+//        username = binding.name.text.toString().trim()
+//        email = binding.email.text.toString().trim()
+//        password = binding.password.text.toString().trim()
+//        val user=UserModel(username,email,password)
+//        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+//        database.child("user").child(userId).setValue(user)
+//    }
+private fun saveUserData() {
+    val name = binding.name.text.toString().trim()
+    val email = binding.email.text.toString().trim()
+    val password = binding.password.text.toString().trim()
 
-    private fun saveUserData() {
-        username = binding.name.text.toString().trim()
-        email = binding.email.text.toString().trim()
-        password = binding.password.text.toString().trim()
-        val user=UserModel(username,email,password)
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        database.child("user").child(userId).setValue(user)
+    // Tạo user object với role mặc định
+    val user = UserModel(
+        name = name,
+        email = email,
+        password = password,
+        role = "user" // Mặc định là user
+    )
+
+    val userId = auth.currentUser?.uid ?: run {
+        Toast.makeText(this, "Lỗi tạo tài khoản", Toast.LENGTH_SHORT).show()
+        return
     }
+
+    // Lưu lên database
+    database.child("users").child(userId).setValue(user)
+        .addOnSuccessListener {
+            Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
+        }
+        .addOnFailureListener { e ->
+            Log.e("SignActivity", "Lỗi lưu dữ liệu", e)
+        }
+}
 }

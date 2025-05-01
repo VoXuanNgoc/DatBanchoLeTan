@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/xin" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/passwordlogin"
         android:layout_width="300dp"
         android:layout_height="57dp"
         android:layout_marginBottom="304dp"
@@ -31,9 +31,9 @@
         android:textColorHint="@color/xanh"
         android:backgroundTint="@color/xanh"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/emaillogin"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress" />
+        app:layout_constraintStart_toStartOf="@+id/emaillogin" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginbutton"
@@ -56,9 +56,9 @@
         android:text="or"
         android:textColor="#023E89"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
+        app:layout_constraintEnd_toEndOf="@+id/passwordlogin"
         app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword" />
+        app:layout_constraintStart_toStartOf="@+id/passwordlogin" />
 
     <TextView
         android:id="@+id/donthaveaccount"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/emaillogin"
         android:layout_width="300dp"
         android:layout_height="57dp"
         android:layout_marginBottom="380dp"
