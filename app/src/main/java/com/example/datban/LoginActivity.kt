@@ -30,17 +30,27 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference
-        binding.loginbutton.setOnClickListener{
+//        binding.loginbutton.setOnClickListener{
+//            email = binding.emaillogin.text.toString().trim()
+//            password = binding.passwordlogin.text.toString().trim()
+//            if (email.isBlank() || password.isBlank()){
+//                Toast.makeText(this,"Please Fill All Details",Toast.LENGTH_SHORT).show()
+//            }else{
+//                loginUser(email, password)
+//            }
+//            val intent = Intent(this,SignActivity::class.java)
+//            startActivity(intent)
+//        }
+        binding.loginbutton.setOnClickListener {
             email = binding.emaillogin.text.toString().trim()
             password = binding.passwordlogin.text.toString().trim()
-            if (email.isBlank() || password.isBlank()){
-                Toast.makeText(this,"Please Fill All Details",Toast.LENGTH_SHORT).show()
-            }else{
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Please Fill All Details", Toast.LENGTH_SHORT).show()
+            } else {
                 loginUser(email, password)
             }
-            val intent = Intent(this,SignActivity::class.java)
-            startActivity(intent)
         }
+
         binding.donthaveaccount.setOnClickListener{
             val intent = Intent(this,SignActivity::class.java)
             startActivity(intent)
