@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ban"
+        android:title="Bàn"
+        android:icon="@drawable/baseline_assignment_ind_24"/>
+    <item
+        android:id="@+id/lienhe"
+        android:title="Liên Hệ"
+        android:icon="@drawable/baseline_call_24"/>
+    <item
+        android:id="@+id/add"
+        android:title=""
+        android:enabled="false"/>
+    <item
+        android:id="@+id/menu"
+        android:title="Menu"
+        android:icon="@drawable/baseline_content_paste_24"/>
+    <item
+        android:id="@+id/khac"
+        android:title="Khác"
+        android:icon="@drawable/baseline_dashboard_customize_24"/>
+</menu>
