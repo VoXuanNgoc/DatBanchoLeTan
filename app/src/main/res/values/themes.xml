@@ -10,4 +10,10 @@
     </style>
 
     <style name="Theme.DatBan" parent="Base.Theme.DatBan" />
+    
+    <style name="App.Custum.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">
+            @color/cam
+        </item>
+    </style>
 </resources>
