@@ -1,5 +1,6 @@
 package com.example.datban
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -41,10 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.drawerArrowDrawable.color = resources.getColor(R.color.cam, theme)
         toggle.syncState()
 
-//        if(savedInstanceState == null){
-//            replaceFragment(BanFragment(),"Đặt Bàn")
-//            navigationView.setCheckedItem(R.id.ban)
-//        }
+
         if (savedInstanceState == null) {
             replaceFragment(BanFragment(), "Đặt Bàn")
             val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -67,8 +65,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     true
                 }
                 R.id.add -> {
-                    replaceFragment(AddFragment(), "Thêm Bàn")
-                    true
+//                    replaceFragment(AddFragment(), "Thêm Bàn")
+//                    true
+                    startActivity(Intent(this, AddActivity::class.java))  // Mở activity_add.xml
+                    false // Không chọn mục này trên BottomNavigation
                 }
                 R.id.menu -> {
                     replaceFragment(MenuFragment(),"Menu")
@@ -94,8 +94,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 bottomNavigationView.selectedItemId = R.id.lienhe
             }
             R.id.add -> {
-                replaceFragment(AddFragment(), "Thêm Bàn")
-                bottomNavigationView.selectedItemId = R.id.add
+//                replaceFragment(AddFragment(), "Thêm Bàn")
+//                bottomNavigationView.selectedItemId = R.id.add
+                startActivity(Intent(this, AddActivity::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+                return true
             }
             R.id.menu -> {
                 replaceFragment(MenuFragment(), "Menu")
