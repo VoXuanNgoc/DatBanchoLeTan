@@ -10,6 +10,10 @@
         <color name="purple_700">#3700B3</color>
         <color name="teal_200">#03DAC5</color>
         <color name="teal_700">#018786</color>
+    <color name="gray">#CCCCCC</color>
+    <!-- Thêm các màu mới -->
+    <color name="orange">#FFA500</color>
+    <color name="gold">#FFD700</color>
 
         <!-- Thêm 2 màu này để sửa lỗi -->
         <color name="startColor">#FFA726</color> <!-- màu cam sáng -->
