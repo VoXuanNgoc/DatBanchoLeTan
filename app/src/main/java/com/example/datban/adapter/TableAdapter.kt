@@ -13,7 +13,9 @@ import com.example.datban.model.TableModel
 
 class TableAdapter(
     context: Context,
-    private val tables: List<TableModel>,
+//    private val tables: List<TableModel>,
+    private val tables: MutableList<TableModel>,  // ⚠️ Đã sửa List -> MutableList
+
     private val reservedTables: Set<String>
 ) : ArrayAdapter<TableModel>(context, 0, tables) {
 
@@ -62,6 +64,12 @@ class TableAdapter(
 
 
     }
+    fun updateData(newTables: List<TableModel>) {
+        this.tables.clear()
+        this.tables.addAll(newTables)
+        notifyDataSetChanged()
+    }
+
 }
 //package com.example.datban
 //

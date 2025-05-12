@@ -18,6 +18,18 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/layoutKhuButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+    </HorizontalScrollView>
 
     <!-- Thêm FrameLayout bao bọc ListView -->
     <FrameLayout

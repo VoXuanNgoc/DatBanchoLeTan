@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.datban.model.TableModel
 import com.google.firebase.database.FirebaseDatabase
 
@@ -21,6 +23,13 @@ class SelectTableActivity : AppCompatActivity() {
     private lateinit var selectedDate: String
     private lateinit var adapter: TableAdapter
     private var selectedTable: TableModel? = null // Đã khai báo đúng kiểu
+    private var allTables: MutableList<TableModel> = mutableListOf()
+
+    //
+    private lateinit var khuButtonLayout: LinearLayout
+    private var filteredTables: MutableList<TableModel> = mutableListOf()
+    private var selectedKhuButton: Button? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +44,8 @@ class SelectTableActivity : AppCompatActivity() {
 
         selectedDate = intent.getStringExtra("selected_date") ?: ""
 
+        khuButtonLayout = findViewById(R.id.layoutKhuButtons)
+
         loadTableData()
 
         // Xử lý chọn bàn
@@ -48,7 +59,7 @@ class SelectTableActivity : AppCompatActivity() {
 //            }
 //        }
         listView.setOnItemClickListener { _, _, position, _ ->
-            val table = tables[position]
+            val table = filteredTables[position]
             val tableKey = "${table.khu} - ${table.soBan}"
 
             if (!reservedTables.contains(tableKey)) {
@@ -103,18 +114,37 @@ class SelectTableActivity : AppCompatActivity() {
     private fun loadAllTables() {
         val tableRef = FirebaseDatabase.getInstance().getReference("tables")
         tableRef.get().addOnSuccessListener { tableSnapshot ->
-            tables.clear()
+ //           tables.clear()
+//            allTables.clear() // <- Thêm dòng này
+
             Log.d("SelectTable", "Total tables from Firebase: ${tableSnapshot.childrenCount}")
+
+//            for (child in tableSnapshot.children) {
+//                val table = child.getValue(TableModel::class.java)
+//                table?.let {
+//                    Log.d("SelectTable", "Loaded table: ${it.soBan}")
+//                    tables.add(it.copy(id = child.key ?: ""))
+//
+//                }
+//            }
+            tables.clear()
+            allTables.clear() // <- Thêm dòng này
 
             for (child in tableSnapshot.children) {
                 val table = child.getValue(TableModel::class.java)
                 table?.let {
-                    Log.d("SelectTable", "Loaded table: ${it.soBan}")
-                    tables.add(it.copy(id = child.key ?: ""))
+                    val tableWithId = it.copy(id = child.key ?: "")
+                    tables.add(tableWithId)
+                    allTables.add(tableWithId) // <- Lưu bản gốc
                 }
             }
+
             Log.d("SelectTable", "Tables count: ${tables.size}")
             adapter.notifyDataSetChanged()
+            filteredTables = tables.toMutableList()
+            adapter.updateData(filteredTables)
+            setupKhuButtons()
+
             showLoading(false)
         }
             .addOnFailureListener {
@@ -128,4 +158,100 @@ class SelectTableActivity : AppCompatActivity() {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
         listView.visibility = if (show) View.GONE else View.VISIBLE
     }
+//    private fun setupKhuButtons() {
+//        khuButtonLayout.removeAllViews()
+//
+//        val khuSet = allTables.map { it.khu }.distinct().sorted()
+//
+//// Nút "Tất cả"
+//        val allButton = createKhuButton("Tất cả")
+//        allButton.setOnClickListener {
+//            filteredTables = allTables.toMutableList() // <- Sửa từ tables -> allTables
+//            adapter.updateData(filteredTables)
+//        }
+//        khuButtonLayout.addView(allButton)
+//
+//        for (khu in khuSet) {
+//            val button = createKhuButton(khu)
+//            button.setOnClickListener {
+//                filteredTables = allTables.filter { it.khu == khu }.toMutableList() // <- sửa
+//                adapter.updateData(filteredTables)
+//            }
+//            khuButtonLayout.addView(button)
+//        }
+//
+//    }
+private fun setupKhuButtons() {
+    khuButtonLayout.removeAllViews()
+
+    val khuSet = allTables.map { it.khu }.distinct().sorted()
+
+    // Nút "Tất cả"
+    val allButton = createKhuButton("Tất cả")
+    allButton.setOnClickListener {
+        filteredTables = allTables.toMutableList()
+        adapter.updateData(filteredTables)
+        updateSelectedButton(allButton)
+    }
+    khuButtonLayout.addView(allButton)
+
+    for (khu in khuSet) {
+        val button = createKhuButton(khu)
+        button.setOnClickListener {
+            filteredTables = allTables.filter { it.khu == khu }.toMutableList()
+            adapter.updateData(filteredTables)
+            updateSelectedButton(button)
+        }
+        khuButtonLayout.addView(button)
+    }
+
+    // Mặc định chọn "Tất cả"
+    updateSelectedButton(allButton)
+}
+    private fun updateSelectedButton(newSelected: Button) {
+
+        // Reset nút trước (nếu có)
+        selectedKhuButton?.let {
+            it.setBackgroundResource(R.drawable.bg_khu_button)
+           // it.setBackgroundColor(resources.getColor(R.color.cam, null))
+            it.setTextColor(resources.getColor(R.color.white, null))
+        }
+
+        // Cập nhật nút mới
+        newSelected.setBackgroundResource(R.drawable.bg_khu_button2) // Vuông khi chọn
+
+       // newSelected.setBackgroundColor(resources.getColor(R.color.xanh, null))
+        newSelected.setTextColor(resources.getColor(R.color.white, null))
+        selectedKhuButton = newSelected
+    }
+
+
+
+    private fun createKhuButton(khu: String): Button {
+        val button = Button(this).apply {
+            text = khu
+            setPadding(40, 10, 40, 10)
+            setBackgroundColor(resources.getColor(R.color.cam, null))
+            setTextColor(resources.getColor(R.color.white, null))
+            textSize = 14f
+
+            // Bo tròn và margin
+            background = ContextCompat.getDrawable(context, R.drawable.bg_khu_button)
+        }
+
+        // Set margin (LayoutParams)
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            setMargins(16, 8, 16, 8)
+        }
+
+        button.layoutParams = params
+
+        return button
+    }
+
+
+
 }
