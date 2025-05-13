@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -78,7 +79,8 @@ class AddActivity : AppCompatActivity() {
 
     }
 
-    //    private fun saveReservation() {
+
+//    private fun saveReservation() {
 //        // Lấy dữ liệu từ các trường nhập liệu
 //        val name = nameEditText.text.toString().trim()
 //        val phone = phoneEditText.text.toString().trim()
@@ -86,31 +88,16 @@ class AddActivity : AppCompatActivity() {
 //        val date = editTextDate.text.toString().trim()
 //        val timeArrival = editTextTime.text.toString().trim()
 //        val timeDeparture = editTextTime2.text.toString().trim()
-//        val table = textSelectedTable.text.toString().trim()
 //
 //        // Kiểm tra các trường bắt buộc
 //        if (name.isEmpty() || phone.isEmpty() || pax.isEmpty() || date.isEmpty() ||
-//            timeArrival.isEmpty() || timeDeparture.isEmpty() || table == "Chưa chọn bàn") {
+//            timeArrival.isEmpty() || timeDeparture.isEmpty() || selectedTable.isEmpty() || selectedTable == "Chưa chọn bàn") {
 //            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show()
 //            return
 //        }
 //
-//        // Kiểm tra thời gian
-//        if (!isTimeValid(timeArrival, timeDeparture)) {
-//            Toast.makeText(this, "Giờ kết thúc phải sau giờ bắt đầu ít nhất 1 giờ", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        // Kiểm tra ngày không được trong quá khứ
-//        if (isDateInPast(date)) {
-//            Toast.makeText(this, "Không thể đặt bàn trong quá khứ", Toast.LENGTH_SHORT).show()
-//            return
-//        }
-//
-//        // Tạo ID ngẫu nhiên cho reservation
+//        // Lưu thông tin đặt bàn với bàn đã chọn
 //        val id = UUID.randomUUID().toString()
-//
-//        // Tạo đối tượng Reservation
 //        val reservation = Reservation(
 //            id = id,
 //            name = name,
@@ -119,60 +106,69 @@ class AddActivity : AppCompatActivity() {
 //            date = date,
 //            timeArrival = timeArrival,
 //            timeDeparture = timeDeparture,
-//            table = table,
+//            table = selectedTable, // Lưu cả khu và bàn
 //            status = "Chưa đến"
 //        )
 //
-//        // Lưu lên Firebase
+//
 //        database.child(id).setValue(reservation)
 //            .addOnSuccessListener {
 //                Toast.makeText(this, "Đặt bàn thành công!", Toast.LENGTH_SHORT).show()
-//                finish() // Đóng activity sau khi lưu thành công
+//                finish()
 //            }
 //            .addOnFailureListener {
 //                Toast.makeText(this, "Đặt bàn thất bại: ${it.message}", Toast.LENGTH_SHORT).show()
 //            }
 //    }
-    private fun saveReservation() {
-        // Lấy dữ liệu từ các trường nhập liệu
-        val name = nameEditText.text.toString().trim()
-        val phone = phoneEditText.text.toString().trim()
-        val pax = paxEditText.text.toString().trim()
-        val date = editTextDate.text.toString().trim()
-        val timeArrival = editTextTime.text.toString().trim()
-        val timeDeparture = editTextTime2.text.toString().trim()
-
-        // Kiểm tra các trường bắt buộc
-        if (name.isEmpty() || phone.isEmpty() || pax.isEmpty() || date.isEmpty() ||
-            timeArrival.isEmpty() || timeDeparture.isEmpty() || selectedTable.isEmpty() || selectedTable == "Chưa chọn bàn") {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Lưu thông tin đặt bàn với bàn đã chọn
-        val id = UUID.randomUUID().toString()
-        val reservation = Reservation(
-            id = id,
-            name = name,
-            phone = phone,
-            pax = pax.toInt(),
-            date = date,
-            timeArrival = timeArrival,
-            timeDeparture = timeDeparture,
-            table = selectedTable, // Lưu cả khu và bàn
-            status = "Chưa đến"
-        )
-
-
-        database.child(id).setValue(reservation)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Đặt bàn thành công!", Toast.LENGTH_SHORT).show()
-                finish()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Đặt bàn thất bại: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
+private fun saveReservation() {
+    val name = nameEditText.text.toString().trim()
+    val phone = phoneEditText.text.toString().trim()
+    val pax = try {
+        paxEditText.text.toString().trim().toInt()
+    } catch (e: Exception) {
+        Toast.makeText(this, "Số lượng khách phải là số", Toast.LENGTH_SHORT).show()
+        return
     }
+
+    val date = editTextDate.text.toString().trim()
+    val timeArrival = editTextTime.text.toString().trim()
+    val timeDeparture = editTextTime2.text.toString().trim()
+    val table = selectedTable
+
+    // Validate dữ liệu
+    if (name.isEmpty() || phone.isEmpty() || pax <= 0 || date.isEmpty() ||
+        timeArrival.isEmpty() || timeDeparture.isEmpty() || table.isEmpty()) {
+        Toast.makeText(this, "Vui lòng điền đầy đủ thông tin hợp lệ", Toast.LENGTH_SHORT).show()
+        return
+    }
+
+    // Log dữ liệu trước khi gửi
+    Log.d("AddActivity", "Preparing to save reservation: $name, $phone, $pax, $date, $timeArrival, $timeDeparture, $table")
+
+    val id = database.push().key ?: UUID.randomUUID().toString()
+    val reservation = Reservation(
+        id = id,
+        name = name,
+        phone = phone,
+        pax = pax,
+        date = date,
+        timeArrival = timeArrival,
+        timeDeparture = timeDeparture,
+        table = table,
+        status = "Chưa đến"
+    )
+
+    database.child(id).setValue(reservation)
+        .addOnSuccessListener {
+            Log.d("AddActivity", "Reservation saved successfully")
+            Toast.makeText(this, "Đặt bàn thành công!", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+        .addOnFailureListener { e ->
+            Log.e("AddActivity", "Error saving reservation", e)
+            Toast.makeText(this, "Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+}
 
 
     private fun isDateInPast(selectedDate: String): Boolean {

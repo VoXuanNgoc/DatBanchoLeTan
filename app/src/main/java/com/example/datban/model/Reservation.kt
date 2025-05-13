@@ -1,7 +1,8 @@
 package com.example.datban.model
 
 data class Reservation(
-    val id: String = "",
+//    val id: String = "",
+    val id: String? = null,
     val name: String = "",
     val phone: String = "",
     val pax: Int = 0,

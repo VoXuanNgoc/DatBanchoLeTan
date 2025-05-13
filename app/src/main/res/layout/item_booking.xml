@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="180dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:id="@+id/itembook"
@@ -62,7 +63,7 @@
 
             <LinearLayout
                 android:id="@+id/trailayout"
-                android:layout_width="261dp"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
@@ -126,7 +127,9 @@
                 <Spinner
                     android:id="@+id/statusbook"
                     android:layout_width="match_parent"
-                    android:layout_height="43dp" />
+                    android:textSize="12sp"
+                    android:popupBackground="@color/xanh"
+                android:layout_height="43dp" />
 
                 <TextView
                     android:id="@+id/banbook"

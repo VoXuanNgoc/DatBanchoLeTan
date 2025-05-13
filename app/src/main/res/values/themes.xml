@@ -12,9 +12,7 @@
     <style name="Theme.DatBan" parent="Base.Theme.DatBan" />
     
     <style name="App.Custum.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">
-            @color/cam
-        </item>
+        <item name="android:color">#6AA7F6</item>
     </style>
     <style name="FilterButton">
         <item name="android:layout_width">wrap_content</item>
@@ -22,6 +20,11 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:backgroundTint">@color/xanh</item>
         <item name="android:layout_marginEnd">8dp</item>
+    </style>
+    <!-- res/values/styles.xml -->
+    <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:textColor">@color/xanh</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 </resources>
