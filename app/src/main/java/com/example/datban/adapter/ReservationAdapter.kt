@@ -1,11 +1,13 @@
 package com.example.datban
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,7 @@ class ReservationAdapter(
         private val tableTextView: TextView = itemView.findViewById(R.id.banbook)
         private val timeLeftTextView: TextView = itemView.findViewById(R.id.baothoigian)
         private val statusSpinner: Spinner = itemView.findViewById(R.id.statusbook)
+        private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
 
         fun bind(reservation: Reservation) {
             nameTextView.text = reservation.name
@@ -74,8 +77,25 @@ class ReservationAdapter(
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+            btnEdit.setOnClickListener {
+                val context = itemView.context
+                val intent = Intent(context, AddActivity::class.java).apply {
+                    putExtra("reservation_id", reservation.id)
+                    putExtra("name", reservation.name)
+                    putExtra("phone", reservation.phone)
+                    putExtra("pax", reservation.pax)
+                    putExtra("date", reservation.date)
+                    putExtra("timeArrival", reservation.timeArrival)
+                    putExtra("timeDeparture", reservation.timeDeparture)
+                    putExtra("table", reservation.table)
+                    putExtra("status", reservation.status)
+                    putExtra("is_edit_mode", true)
+                }
+                context.startActivity(intent)
+            }
         }
-    }
+        }
+
 
     fun updateData(newReservations: List<Reservation>) {
         reservations = newReservations

@@ -20,10 +20,10 @@
         android:id="@+id/imageView10"
         android:layout_width="258dp"
         android:layout_height="561dp"
-        android:layout_marginBottom="292dp"
+        android:layout_marginBottom="332dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.62"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/addtable" />
 
