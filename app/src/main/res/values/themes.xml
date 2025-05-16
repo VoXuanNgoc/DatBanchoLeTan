@@ -12,7 +12,7 @@
     <style name="Theme.DatBan" parent="Base.Theme.DatBan" />
     
     <style name="App.Custum.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">#6AA7F6</item>
+        <item name="android:color">#FFFFFF</item>
     </style>
     <style name="FilterButton">
         <item name="android:layout_width">wrap_content</item>

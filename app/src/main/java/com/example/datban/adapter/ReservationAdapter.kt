@@ -34,6 +34,8 @@ class ReservationAdapter(
         private val timeLeftTextView: TextView = itemView.findViewById(R.id.baothoigian)
         private val statusSpinner: Spinner = itemView.findViewById(R.id.statusbook)
         private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
+        private val btnOder: ImageButton = itemView.findViewById(R.id.btnOrder)
+
         fun bind(reservation: Reservation) {
             nameTextView.text = reservation.name
             paxTextView.text = "${reservation.pax} Pax"
@@ -92,6 +94,15 @@ class ReservationAdapter(
                     putExtra("is_edit_mode", true)
                 }
                 context.startActivity(intent)
+            }
+            btnOder.setOnClickListener{
+                val context = itemView.context
+                val  intent = Intent(context, OrderFood::class.java).apply {
+                    putExtra("name", reservation.name)
+                    putExtra("pax", reservation.pax)
+                }
+                context.startActivity(intent)
+
             }
 
 
