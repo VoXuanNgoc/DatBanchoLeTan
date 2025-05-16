@@ -17,18 +17,23 @@ class AdminMainActivity : AppCompatActivity() {
         ActivityAdminMainBinding.inflate(layoutInflater)
     }
 
-
+    // Update this in AdminMainActivity.kt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding.addTable.setOnClickListener{
+        binding.addTable.setOnClickListener {
             val intent = Intent(this, AdminAddRoomActivity::class.java)
             startActivity(intent)
         }
-        setContentView(binding.root) // ✅ Đúng cách
 
-//        setContentView(R.layout.activity_admin_main)
+        binding.addMenu.setOnClickListener {
+            val intent = Intent(this, AdminAddMenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        setContentView(binding.root)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

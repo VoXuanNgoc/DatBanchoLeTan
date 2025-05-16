@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
@@ -33,7 +34,6 @@ class ReservationAdapter(
         private val timeLeftTextView: TextView = itemView.findViewById(R.id.baothoigian)
         private val statusSpinner: Spinner = itemView.findViewById(R.id.statusbook)
         private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
-
         fun bind(reservation: Reservation) {
             nameTextView.text = reservation.name
             paxTextView.text = "${reservation.pax} Pax"
@@ -93,6 +93,8 @@ class ReservationAdapter(
                 }
                 context.startActivity(intent)
             }
+
+
         }
         }
 

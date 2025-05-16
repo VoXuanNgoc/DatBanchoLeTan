@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Background square -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M0,0 h24 v24 h-24 z" />
+
+    <!-- Diagonal lines for cross -->
+    <path
+        android:fillColor="#757575"
+        android:pathData="M4,4 L20,20 M20,4 L4,20"
+        android:strokeWidth="2"
+        android:strokeColor="#757575" />
+</vector>
