@@ -18,25 +18,36 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.258" />
+        app:layout_constraintVertical_bias="0.074" />
 
     <Button
         android:id="@+id/addTable"
         android:layout_width="300dp"
         android:layout_height="57dp"
-        android:layout_marginBottom="376dp"
+        android:layout_marginBottom="508dp"
         android:text="AddTable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/addMenu"
         android:layout_width="300dp"
         android:layout_height="57dp"
-        android:layout_marginBottom="276dp"
+        android:layout_marginBottom="428dp"
         android:text="AddMenu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnThongke"
+        android:layout_width="300dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="348dp"
+        android:text="Xem Thống Kê"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

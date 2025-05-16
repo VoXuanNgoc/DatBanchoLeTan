@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="350dp"
+        android:layout_height="148dp"
+        app:srcCompat="@drawable/check" />
+
+    <EditText
+        android:id="@+id/edtDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Chọn ngày (dd/MM/yyyy)"
+        android:focusable="false"
+        android:clickable="true" />
+
+    <Button
+        android:id="@+id/btnLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load" />
+
+    <TextView
+        android:id="@+id/tvTotalBookings"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tổng số bàn đặt: " />
+
+    <TextView
+        android:id="@+id/tvTotalPax"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tổng số pax: " />
+
+    <TextView
+        android:id="@+id/tvCancelledBookings"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tổng số bàn hủy: " />
+
+    <TextView
+        android:id="@+id/tvCancelledPax"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Tổng số pax hủy: " />
+</LinearLayout>

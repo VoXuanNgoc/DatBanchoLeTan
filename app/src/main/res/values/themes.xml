@@ -17,7 +17,7 @@
     <style name="FilterButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/cam</item>
         <item name="android:backgroundTint">@color/xanh</item>
         <item name="android:layout_marginEnd">8dp</item>
     </style>

@@ -8,6 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.datban.R
 import com.example.datban.SignActivity
+import com.example.datban.StartActivity
+import com.example.datban.StatisticsActivity
 import com.example.datban.databinding.ActivityAdminMainBinding
 import com.example.datban.databinding.ActivityLoginBinding
 
@@ -17,7 +19,6 @@ class AdminMainActivity : AppCompatActivity() {
         ActivityAdminMainBinding.inflate(layoutInflater)
     }
 
-    // Update this in AdminMainActivity.kt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -29,6 +30,12 @@ class AdminMainActivity : AppCompatActivity() {
 
         binding.addMenu.setOnClickListener {
             val intent = Intent(this, AdminAddMenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Thêm vào phần onCreate của AdminMainActivity
+        binding.btnThongke.setOnClickListener {
+            val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
         }
 

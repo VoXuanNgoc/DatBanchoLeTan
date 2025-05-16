@@ -62,79 +62,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="true"
-    android:paddingVertical="4dp"
-    android:paddingHorizontal="0dp"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintTop_toBottomOf="@id/horizontalScroll"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScroll"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:padding="8dp">-->
-
-<!--    &lt;!&ndash; Horizontal ScrollView chứa các nút &ndash;&gt;-->
-<!--    <HorizontalScrollView-->
-<!--        android:id="@+id/horizontalScroll"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fillViewport="true"-->
-<!--        android:scrollbars="none"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/layoutstatus"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:paddingEnd="8dp">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnTatCa"-->
-<!--                style="@style/FilterButton"-->
-<!--                android:text="Tất cả" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnChuaDen"-->
-<!--                style="@style/FilterButton"-->
-<!--                android:text="Chưa đến" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnDaNhan"-->
-<!--                style="@style/FilterButton"-->
-<!--                android:text="Đã nhận bàn" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnHoanThanh"-->
-<!--                style="@style/FilterButton"-->
-<!--                android:text="Hoàn thành" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/btnDaHuy"-->
-<!--                style="@style/FilterButton"-->
-<!--                android:text="Đã hủy" />-->
-<!--        </LinearLayout>-->
-<!--    </HorizontalScrollView>-->
-
-<!--    &lt;!&ndash; Danh sách hiển thị dữ liệu &ndash;&gt;-->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:clipToPadding="false"-->
-<!--        android:paddingTop="8dp"-->
-<!--        android:paddingBottom="8dp"-->
-<!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/horizontalScroll"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-

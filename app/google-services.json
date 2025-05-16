@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "796679965949",
+    "firebase_url": "https://datbanletan-default-rtdb.firebaseio.com",
     "project_id": "datbanletan",
     "storage_bucket": "datbanletan.firebasestorage.app"
   },

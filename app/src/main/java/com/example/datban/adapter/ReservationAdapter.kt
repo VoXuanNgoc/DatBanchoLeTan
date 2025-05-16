@@ -96,7 +96,7 @@ class ReservationAdapter(
 
 
         }
-        }
+    }
 
 
     fun updateData(newReservations: List<Reservation>) {
