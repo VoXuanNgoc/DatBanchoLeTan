@@ -38,6 +38,11 @@ class AdminMainActivity : AppCompatActivity() {
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
         }
+        binding.btnImage.setOnClickListener {
+            val intent = Intent(this, AddImageActivity::class.java)
+            startActivity(intent)
+        }
+
 
         setContentView(binding.root)
 

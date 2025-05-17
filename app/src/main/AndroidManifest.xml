@@ -26,6 +26,9 @@
         <activity
             android:name=".admin.AdminAddRoomActivity"
             android:exported="false" />
+        <activity android:name=".admin.AddImageActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".AddActivity"
             android:exported="false" />
@@ -60,6 +63,7 @@
             android:name=".StatisticsActivity"
             android:exported="false"
             android:label="Thống kê đặt bàn"></activity>
+
 
     </application>
 

@@ -5,6 +5,7 @@
     android:layout_height="150dp"
     android:orientation="horizontal"
     android:padding="8dp"
+    android:background="@drawable/item_background"
     android:layout_marginBottom="8dp">
 
     <ImageView
@@ -25,20 +26,31 @@
             android:id="@+id/tvMenuItemName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="16sp"
+            android:textSize="30sp"
+            android:textColor="@color/xanh"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvMenuItemPrice"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/xanh"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginTop="4dp" />
 
         <CheckBox
             android:id="@+id/checkBox"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Chọn"
+            android:textColor="@color/xanh"
+            android:textSize="20sp" />
 
     </LinearLayout>
 </LinearLayout>
