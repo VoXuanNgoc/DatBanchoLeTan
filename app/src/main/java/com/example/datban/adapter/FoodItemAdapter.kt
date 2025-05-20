@@ -1,6 +1,8 @@
+//
 //package com.example.datban
 //
 //import android.content.Context
+//import android.util.Log
 //import android.view.LayoutInflater
 //import android.view.View
 //import android.view.ViewGroup
@@ -13,14 +15,22 @@
 //
 //class FoodItemAdapter(
 //    private val context: Context,
-//    private var allItems: List<FoodItem> // giữ toàn bộ món ăn gốc
+//    private var allItems: List<FoodItem>
 //) : BaseAdapter() {
 //
-//    private var displayedItems: List<FoodItem> = allItems // chỉ là danh sách đang hiển thị
+//    private var displayedItems: List<FoodItem> = allItems
+//    private val TAG = "FoodItemAdapter"
 //
 //    fun updateList(newList: List<FoodItem>) {
-//        displayedItems = newList
+//        // Giữ lại trạng thái quantity từ danh sách cũ
+//        allItems = newList.map { newItem ->
+//            allItems.find { it.id == newItem.id }?.let { existingItem ->
+//                newItem.copy(quantity = existingItem.quantity)
+//            } ?: newItem
+//        }
+//        displayedItems = allItems
 //        notifyDataSetChanged()
+//        Log.d(TAG, "Danh sách đã cập nhật - Số lượng: ${allItems.size}")
 //    }
 //
 //    override fun getCount(): Int = displayedItems.size
@@ -36,30 +46,41 @@
 //        val foodItem = getItem(position)
 //
 //        val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
-//        val tvMenuItemName = view.findViewById<TextView>(R.id.tvMenuItemName)
-//        val tvMenuItemPrice = view.findViewById<TextView>(R.id.tvMenuItemPrice)
-//        val ivMenuItem = view.findViewById<ImageView>(R.id.ivMenuItem)
+//        val tvName = view.findViewById<TextView>(R.id.tvMenuItemName)
+//        val tvPrice = view.findViewById<TextView>(R.id.tvMenuItemPrice)
+//        val ivImage = view.findViewById<ImageView>(R.id.ivMenuItem)
 //
-//        tvMenuItemName.text = foodItem.name
-//        tvMenuItemPrice.text = "Giá: ${String.format("%,.0f", foodItem.price)} VND"
+//        tvName.text = foodItem.name
+//        tvPrice.text = "Giá: ${String.format("%,.0f", foodItem.price)} VND"
+//
+//        // Xử lý trạng thái checkbox
 //        checkBox.setOnCheckedChangeListener(null)
 //        checkBox.isChecked = foodItem.quantity > 0
-//        checkBox.setOnCheckedChangeListener { _, isChecked -> foodItem.quantity = if (isChecked) 1 else 0
+//        checkBox.setOnCheckedChangeListener { _, isChecked ->
+//            foodItem.quantity = if (isChecked) 1 else 0
+//            Log.d(TAG, "Món ${foodItem.name} - Số lượng: ${foodItem.quantity}")
 //        }
 //
+//        // Load ảnh bằng Glide
 //        Glide.with(context)
 //            .load(foodItem.imageUrl)
 //            .placeholder(R.drawable.ic_food_placeholder)
-//            .into(ivMenuItem)
+//            .error(R.drawable.ic_placeholder)
+//            .into(ivImage)
 //
 //        return view
 //    }
 //
-//    // Lấy danh sách món đã chọn
 //    fun getSelectedItems(): List<FoodItem> {
-//        return allItems.filter { it.quantity > 0 }
+//        val selected = allItems.filter { it.quantity > 0 }
+//        Log.d(TAG, "Số món đã chọn: ${selected.size}")
+//        return selected
 //    }
 //
+//    fun clearSelection() {
+//        allItems.forEach { it.quantity = 0 }
+//        notifyDataSetChanged()
+//    }
 //}
 package com.example.datban
 
@@ -84,12 +105,8 @@ class FoodItemAdapter(
     private val TAG = "FoodItemAdapter"
 
     fun updateList(newList: List<FoodItem>) {
-        // Giữ lại trạng thái quantity từ danh sách cũ
-        allItems = newList.map { newItem ->
-            allItems.find { it.id == newItem.id }?.let { existingItem ->
-                newItem.copy(quantity = existingItem.quantity)
-            } ?: newItem
-        }
+        // Không giữ lại trạng thái quantity từ danh sách cũ, reset về 0
+        allItems = newList.map { it.copy(quantity = 0) }
         displayedItems = allItems
         notifyDataSetChanged()
         Log.d(TAG, "Danh sách đã cập nhật - Số lượng: ${allItems.size}")
@@ -115,9 +132,9 @@ class FoodItemAdapter(
         tvName.text = foodItem.name
         tvPrice.text = "Giá: ${String.format("%,.0f", foodItem.price)} VND"
 
-        // Xử lý trạng thái checkbox
+        // Xử lý trạng thái checkbox - luôn bắt đầu với unchecked
         checkBox.setOnCheckedChangeListener(null)
-        checkBox.isChecked = foodItem.quantity > 0
+        checkBox.isChecked = false // Đảm bảo checkbox không được tick ban đầu
         checkBox.setOnCheckedChangeListener { _, isChecked ->
             foodItem.quantity = if (isChecked) 1 else 0
             Log.d(TAG, "Món ${foodItem.name} - Số lượng: ${foodItem.quantity}")

@@ -1,6 +1,7 @@
 package com.example.datban
 
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -91,53 +93,6 @@ class AddActivity : AppCompatActivity() {
 
     }
 
-    private fun saveReservation() {
-        val name = nameEditText.text.toString().trim()
-        val phone = phoneEditText.text.toString().trim()
-        val pax = try {
-            paxEditText.text.toString().trim().toInt()
-        } catch (e: Exception) {
-            Toast.makeText(this, "Số lượng khách phải là số", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val date = editTextDate.text.toString().trim()
-        val timeArrival = editTextTime.text.toString().trim()
-        val timeDeparture = editTextTime2.text.toString().trim()
-        val table = selectedTable
-
-        // Validate dữ liệu
-        if (name.isEmpty() || phone.isEmpty() || pax <= 0 || date.isEmpty() ||
-            timeArrival.isEmpty() || timeDeparture.isEmpty() || table.isEmpty()) {
-            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin hợp lệ", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val id = reservationId ?: database.push().key ?: UUID.randomUUID().toString()
-        val reservation = Reservation(
-            id = id,
-            name = name,
-            phone = phone,
-            pax = pax,
-            date = date,
-            timeArrival = timeArrival,
-            timeDeparture = timeDeparture,
-            table = table,
-            status = if (isEditMode) intent.getStringExtra("status") ?: "Chưa đến" else "Chưa đến"
-        )
-
-        database.child(id).setValue(reservation)
-            .addOnSuccessListener {
-                val message = if (isEditMode) "Cập nhật đặt bàn thành công!" else "Đặt bàn thành công!"
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-
 //    private fun saveReservation() {
 //        val name = nameEditText.text.toString().trim()
 //        val phone = phoneEditText.text.toString().trim()
@@ -160,10 +115,7 @@ class AddActivity : AppCompatActivity() {
 //            return
 //        }
 //
-//        // Log dữ liệu trước khi gửi
-//        Log.d("AddActivity", "Preparing to save reservation: $name, $phone, $pax, $date, $timeArrival, $timeDeparture, $table")
-//
-//        val id = database.push().key ?: UUID.randomUUID().toString()
+//        val id = reservationId ?: database.push().key ?: UUID.randomUUID().toString()
 //        val reservation = Reservation(
 //            id = id,
 //            name = name,
@@ -173,46 +125,202 @@ class AddActivity : AppCompatActivity() {
 //            timeArrival = timeArrival,
 //            timeDeparture = timeDeparture,
 //            table = table,
-//            status = "Chưa đến"
+//            status = if (isEditMode) intent.getStringExtra("status") ?: "Chưa đến" else "Chưa đến"
 //        )
 //
 //        database.child(id).setValue(reservation)
 //            .addOnSuccessListener {
-//                Log.d("AddActivity", "Reservation saved successfully")
-//                Toast.makeText(this, "Đặt bàn thành công!", Toast.LENGTH_SHORT).show()
+//                val message = if (isEditMode) "Cập nhật đặt bàn thành công!" else "Đặt bàn thành công!"
+//                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 //                finish()
 //            }
 //            .addOnFailureListener { e ->
-//                Log.e("AddActivity", "Error saving reservation", e)
 //                Toast.makeText(this, "Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
 //            }
 //    }
+private fun saveReservation() {
+    val name = nameEditText.text.toString().trim()
+    val phone = phoneEditText.text.toString().trim()
+    val paxText = paxEditText.text.toString().trim()
+    val date = editTextDate.text.toString().trim()
+    val timeArrival = editTextTime.text.toString().trim()
+    val timeDeparture = editTextTime2.text.toString().trim()
+    val table = selectedTable
 
+    // Validate từng trường với thông báo cụ thể
+    when {
+        name.isEmpty() -> {
+            nameEditText.error = "Vui lòng nhập tên khách hàng"
+            nameEditText.requestFocus()
+            return
+        }
+        phone.isEmpty() -> {
+            phoneEditText.error = "Vui lòng nhập số điện thoại"
+            phoneEditText.requestFocus()
+            return
+        }
+        !phone.matches(Regex("^[0-9]{10,11}\$")) -> {
+            phoneEditText.error = "Số điện thoại phải có 10-11 chữ số"
+            phoneEditText.requestFocus()
+            return
+        }
+        paxText.isEmpty() -> {
+            paxEditText.error = "Vui lòng nhập số lượng khách"
+            paxEditText.requestFocus()
+            return
+        }
+        paxText.toIntOrNull() == null -> {
+            paxEditText.error = "Số lượng khách phải là số"
+            paxEditText.requestFocus()
+            return
+        }
+        paxText.toInt() <= 0 -> {
+            paxEditText.error = "Số lượng khách phải lớn hơn 0"
+            paxEditText.requestFocus()
+            return
+        }
+        date.isEmpty() -> {
+            editTextDate.error = "Vui lòng chọn ngày đặt bàn"
+            editTextDate.requestFocus()
+            return
+        }
+        isDateInPast(date) -> {
+            editTextDate.error = "Không thể đặt bàn trong quá khứ"
+            editTextDate.requestFocus()
+            return
+        }
+        timeArrival.isEmpty() -> {
+            Toast.makeText(this, "Vui lòng chọn giờ đến", Toast.LENGTH_SHORT).show()
+            editTextTime.performClick()
+            return
+        }
+        timeDeparture.isEmpty() -> {
+            Toast.makeText(this, "Vui lòng chọn giờ kết thúc", Toast.LENGTH_SHORT).show()
+            editTextTime2.performClick()
+            return
+        }
+        !isTimeValid(timeArrival, timeDeparture) -> {
+            Toast.makeText(this, "Giờ kết thúc phải sau giờ bắt đầu ít nhất 1 tiếng", Toast.LENGTH_LONG).show()
+            editTextTime2.performClick()
+            return
+        }
+        table.isEmpty() -> {
+            Toast.makeText(this, "Vui lòng chọn bàn trước khi đặt", Toast.LENGTH_SHORT).show()
+            return
+        }
+    }
 
+    val pax = paxText.toInt()
+    val id = reservationId ?: database.push().key ?: UUID.randomUUID().toString()
+
+    val reservation = Reservation(
+        id = id,
+        name = name,
+        phone = phone,
+        pax = pax,
+        date = date,
+        timeArrival = timeArrival,
+        timeDeparture = timeDeparture,
+        table = table,
+        status = if (isEditMode) intent.getStringExtra("status") ?: "Chưa đến" else "Chưa đến"
+    )
+
+    // Hiển thị progress dialog trong khi lưu
+    val progressDialog = ProgressDialog(this).apply {
+        setMessage(if (isEditMode) "Đang cập nhật đặt bàn..." else "Đang đặt bàn...")
+        setCancelable(false)
+        show()
+    }
+
+    database.child(id).setValue(reservation)
+        .addOnSuccessListener {
+            progressDialog.dismiss()
+            val message = if (isEditMode) "Cập nhật đặt bàn thành công!" else "Đặt bàn thành công!"
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+            // Hiển thị thông báo chi tiết
+            AlertDialog.Builder(this)
+                .setTitle("Thông tin đặt bàn")
+                .setMessage("""
+                    Tên: $name
+                    SĐT: $phone
+                    Số khách: $pax
+                    Ngày: $date
+                    Giờ đến: $timeArrival
+                    Giờ kết thúc: $timeDeparture
+                    Bàn: $table
+                """.trimIndent())
+                .setPositiveButton("OK") { _, _ -> finish() }
+                .show()
+        }
+        .addOnFailureListener { e ->
+            progressDialog.dismiss()
+            AlertDialog.Builder(this)
+                .setTitle("Lỗi")
+                .setMessage("Không thể lưu đặt bàn: ${e.localizedMessage}")
+                .setPositiveButton("OK", null)
+                .show()
+            Log.e("AddActivity", "Error saving reservation", e)
+        }
+}
+
+    // Thêm hàm kiểm tra ngày trong quá khứ
     private fun isDateInPast(selectedDate: String): Boolean {
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val date = sdf.parse(selectedDate)
-        val today = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.time
-
-        return date?.before(today) ?: true
+        return try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = sdf.parse(selectedDate)
+            val today = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.time
+            date.before(today)
+        } catch (e: Exception) {
+            false
+        }
     }
 
+    // Thêm hàm kiểm tra thời gian hợp lệ
     private fun isTimeValid(timeArrival: String, timeDeparture: String): Boolean {
-        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val arrival = sdf.parse(timeArrival)
-        val departure = sdf.parse(timeDeparture)
-
-        // Kiểm tra giờ kết thúc phải sau giờ bắt đầu ít nhất 1 giờ
-        val diffInMillis = departure.time - arrival.time
-        val diffInHours = diffInMillis / (60 * 60 * 1000)
-
-        return diffInHours >= 1
+        return try {
+            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val arrival = sdf.parse(timeArrival)
+            val departure = sdf.parse(timeDeparture)
+            val diffInMillis = departure.time - arrival.time
+            val diffInHours = diffInMillis / (60 * 60 * 1000)
+            diffInHours >= 1
+        } catch (e: Exception) {
+            false
+        }
     }
+
+
+
+//    private fun isDateInPast(selectedDate: String): Boolean {
+//        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//        val date = sdf.parse(selectedDate)
+//        val today = Calendar.getInstance().apply {
+//            set(Calendar.HOUR_OF_DAY, 0)
+//            set(Calendar.MINUTE, 0)
+//            set(Calendar.SECOND, 0)
+//            set(Calendar.MILLISECOND, 0)
+//        }.time
+//
+//        return date?.before(today) ?: true
+//    }
+
+//    private fun isTimeValid(timeArrival: String, timeDeparture: String): Boolean {
+//        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+//        val arrival = sdf.parse(timeArrival)
+//        val departure = sdf.parse(timeDeparture)
+//
+//        // Kiểm tra giờ kết thúc phải sau giờ bắt đầu ít nhất 1 giờ
+//        val diffInMillis = departure.time - arrival.time
+//        val diffInHours = diffInMillis / (60 * 60 * 1000)
+//
+//        return diffInHours >= 1
+//    }
 
     private fun setupDatePicker() {
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
